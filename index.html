@@ -10,7 +10,7 @@
         <style>
             * { box-sizing: border-box; }
             body {
-                min-height: calc(100vh - 4rem);
+                min-height: calc(100dvh - 4rem);
                 display: flex;
                 flex-direction: column;
                 align-items: center;
@@ -107,6 +107,7 @@
                 <button type="button" class="btn option-btn" data-value="voucher" data-label="Gutschein, wann immer du willst">Gutschein, wann immer du willst</button>
                 <input type="hidden" name="Auswahl" id="selectionInput">
                 <input type="hidden" name="_subject" value="Neue Antwort: Oyster Feast">
+                <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
                 <button type="submit" class="btn submit-btn" id="submitBtn" disabled>
                     Ja, das will ich
                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
