@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="de">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Oyster Feast</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+        <style>
+            * { box-sizing: border-box; }
+            body {
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                background-color: #F8F9FA;
+                color: #121212;
+                font-family: "Lato", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+                text-align: center;
+                gap: 2rem;
+                margin: 0 1rem;
+            }
+            h1 {
+                margin: 0;
+                font-family: "Playfair Display", serif;
+                font-weight: 600;
+                font-size: 2.5rem;
+                letter-spacing: -0.02em;
+            }
+            p {
+                margin: 0 0 1.5rem;
+                font-family: "Lato", sans-serif;
+                font-weight: 300;
+                font-size: 1.1rem;
+                color: #222;
+            }
+            .oyster {
+                width: 220px;
+                height: auto;
+            }
+            .btn {
+                border: 1px solid #E2E8F0;
+                background-color: #F8F9FA;
+                color: #121212;
+                padding: 0.9rem 1.5rem;               
+                cursor: pointer;
+            }
+            .options {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+                width: 100%;
+                max-width: 320px;
+            }
+            .option-btn {
+                font-family: "Playfair Display", serif;
+                font-weight: 400;
+                font-size: 1rem;                
+                transition: border-color 0.2s, background-color 0.2s;
+            }
+            .option-btn:hover {
+                border-color: #121212;
+            }
+            .option-btn.selected {
+                border-color: #121212;
+                background-color: #121212;
+                color: #F8F9FA;
+            }
+            .submit-btn {
+                font-family: "Lato", sans-serif;
+                text-transform: uppercase;
+                font-size: 1rem;
+                transition: opacity 0.2s;
+                border-color: #121212;
+                background-color: #222;
+                color: #F8F9FA;
+                margin-top: 2rem;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 0.6rem;
+            }
+            .submit-btn svg {
+                width: 1.1rem;
+                height: 1.1rem;
+                flex-shrink: 0;
+            }
+            .submit-btn:disabled {
+                background-color: #E2E8F0;
+                color: #121212;
+                cursor: not-allowed;
+                opacity: 0.7;
+            }
+        </style>
+    </head>
+    <body>
+        <img class="oyster" src="oyster.svg" alt="Illustration einer Auster">
+        <div>
+            <h1>Oyster Feast</h1>
+            <p class="subline">Wie möchtest Du sie genießen?</p>
+        </div>
+        <form id="oyster-form" action="https://formspree.io/f/xkjnygly" method="POST">
+            <div class="options">
+                <button type="button" class="btn option-btn" data-value="date" data-label="Austern essen — du & ich">Austern essen &mdash; du & ich</button>
+                <button type="button" class="btn option-btn" data-value="voucher" data-label="Gutschein, wann immer du willst">Gutschein, wann immer du willst</button>
+                <input type="hidden" name="Auswahl" id="selectionInput">
+                <input type="hidden" name="_subject" value="Neue Antwort: Oyster Feast">
+                <button type="submit" class="btn submit-btn" id="submitBtn" disabled>
+                    Ja, das will ich
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+        </form>
+
+        <p id="result"></p>
+        <script>
+            const form = document.getElementById('oyster-form');
+            const optionButtons = document.querySelectorAll('.option-btn');
+            const submitBtn = document.getElementById('submitBtn');
+            const selectionInput = document.getElementById('selectionInput');
+            const result = document.getElementById('result');
+
+            const resultMessages = {
+                date: 'Wundervoll! Ich freue mich schon. Ich melde mich bei dir. 🦪',
+                voucher: 'Perfekt! Dein Gutschein ist unterwegs. 🎁'
+            };
+
+            let selectedOption = null;
+
+            optionButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    optionButtons.forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                    selectionInput.value = btn.dataset.label;
+                    selectedOption = btn.dataset.value;
+                    submitBtn.disabled = false;
+                });
+            });
+
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault();
+                if (!selectionInput.value) return;
+
+                submitBtn.disabled = true;
+
+                try {
+                    const response = await fetch(form.action, {
+                        method: 'POST',
+                        body: new FormData(form),
+                        headers: { 'Accept': 'application/json' }
+                    });
+
+                    if (response.ok) {
+                        form.hidden = true;
+                        result.textContent = resultMessages[selectedOption];
+                    } else {
+                        result.textContent = 'Ups, das hat nicht geklappt. Bitte versuch es noch einmal.';
+                        submitBtn.disabled = false;
+                    }
+                } catch (error) {
+                    result.textContent = 'Ups, das hat nicht geklappt. Bitte versuch es noch einmal.';
+                    submitBtn.disabled = false;
+                }
+            });
+        </script>
+    </body>
+</html>
