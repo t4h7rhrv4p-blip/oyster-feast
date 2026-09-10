@@ -6,11 +6,11 @@
         <title>Oyster Feast</title>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,300;1,600&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
         <style>
             * { box-sizing: border-box; }
             body {
-                min-height: 100vh;
+                min-height: calc(100vh - 4rem);
                 display: flex;
                 flex-direction: column;
                 align-items: center;
@@ -20,20 +20,21 @@
                 font-family: "Lato", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
                 text-align: center;
                 gap: 2rem;
-                margin: 0 1rem;
+                margin: 2rem 1rem;
             }
             h1 {
                 margin: 0;
                 font-family: "Playfair Display", serif;
-                font-weight: 600;
-                font-size: 2.5rem;
+                font-weight: 500;
+                font-size: 3rem;
                 letter-spacing: -0.02em;
+                margin-bottom: 0.5rem;
             }
             p {
-                margin: 0 0 1.5rem;
+                margin: 0;
                 font-family: "Lato", sans-serif;
                 font-weight: 300;
-                font-size: 1.1rem;
+                font-size: 1.3rem;
                 color: #222;
             }
             .oyster {
@@ -56,8 +57,7 @@
             }
             .option-btn {
                 font-family: "Playfair Display", serif;
-                font-weight: 400;
-                font-size: 1rem;                
+                font-size: 1.1rem;                
                 transition: border-color 0.2s, background-color 0.2s;
             }
             .option-btn:hover {
